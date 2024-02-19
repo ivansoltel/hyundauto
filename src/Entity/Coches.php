@@ -28,7 +28,7 @@ class Coches
     private ?\DateTimeInterface $fecha = null;
 
     #[ORM\ManyToOne(inversedBy: 'coches')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: false, name: "id_modelo", referencedColumnName: "id")]
     private ?Modelos $id_modelo = null;
 
     public function getMatricula(): ?string
