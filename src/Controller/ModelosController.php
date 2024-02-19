@@ -13,7 +13,7 @@ use Symfony\Component\Routing\Attribute\Route;
 class ModelosController extends AbstractController
 {
     #[Route('/insertar', name: 'insertar')]
-    public function index(EntityManagerInterface $gestorEntidades): Response
+    public function insertar(EntityManagerInterface $gestorEntidades): Response
     {
         // Ejemplo endpoint: http://localhost:8000/modelos/insertar
         $modelos = array (
@@ -42,5 +42,15 @@ class ModelosController extends AbstractController
             $gestorEntidades->flush();
         }
         return new Response("<h1> Insertados Modelos <h1>");
+    }
+
+
+    #[Route('/consultar', name: 'consultar')]
+    public function consultar(): Response
+    {
+        // Endpoint de ejemplo: http://localhost:8000/modelos/consultar
+        return $this->render('modelos/index.html.twig', [
+            'controller_name' => 'ModelosController',
+        ]);
     }
 }
