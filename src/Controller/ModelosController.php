@@ -62,4 +62,24 @@ class ModelosController extends AbstractController
         ]);
         
     }
+
+
+    #[Route('/consultarJSON', name: 'consultar_json')]
+    public function consultarJSON(EntityManagerInterface $gestorEntidades): JsonResponse
+    {
+        // Endpoint de ejemplo: http://localhost:8000/modelos/consultarJSON
+        $repoModelos = $gestorEntidades->getRepository(Modelos::class);
+        $modelos = $repoModelos->joinModelos();
+
+        $json = [];
+        foreach ($modelos as $modelo) {
+            $json[] = [
+                "id" => $modelo["id"],
+                "tipo" => $modelo["nombre_tipo"],
+                "modelo" => $modelo["nombre_modelo"],
+            ]; 
+        }
+
+        return new JsonResponse($json);
+    }
 }
