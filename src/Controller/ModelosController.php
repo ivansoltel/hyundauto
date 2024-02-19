@@ -6,6 +6,7 @@ use App\Entity\Modelos;
 use App\Entity\Tipos;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
@@ -46,11 +47,19 @@ class ModelosController extends AbstractController
 
 
     #[Route('/consultar', name: 'consultar')]
-    public function consultar(): Response
+    public function consultar(EntityManagerInterface $gestorEntidades): Response
     {
         // Endpoint de ejemplo: http://localhost:8000/modelos/consultar
+        $repoModelos = $gestorEntidades->getRepository(Modelos::class);
+        $modelos = $repoModelos->joinModelos();
+   
+        // Así comprobamos que vamos bien!!
+        // return new Response("" .var_dump($modelos));
+   
         return $this->render('modelos/index.html.twig', [
             'controller_name' => 'ModelosController',
+            'modelos' => $modelos,
         ]);
+        
     }
 }

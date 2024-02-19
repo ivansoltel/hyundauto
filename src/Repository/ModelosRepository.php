@@ -45,4 +45,21 @@ class ModelosRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+
+    /**
+     * Sentencia SQL a definir:
+     * SELECT modelos.id, nombre_tipo, nombre_modelo
+     * FROM tipos
+     * INNER JOIN modelos
+     * ON tipos.id = modelos.id_tipo_id;
+     */
+    
+    public function joinModelos(): array {
+        return $this->createQueryBuilder("modelos")
+        ->innerJoin("modelos.id_tipo", "tipos")
+        ->select("modelos.id", "tipos.nombre_tipo", "modelos.nombre_modelo")
+        ->orderBy("tipos.nombre_tipo", "ASC")
+        ->getQuery()
+        ->getResult();
+    } 
 }
