@@ -37,8 +37,8 @@ class ModelosController extends AbstractController
             */
             $repotipos = $gestorEntidades->getRepository(Tipos::class);
             $tipo = $repotipos->find($nuevoModelo["id_tipo"]);
-
             $modelo->setIdTipo($tipo);
+            
             $gestorEntidades->persist($modelo);
             $gestorEntidades->flush();
         }
@@ -83,10 +83,38 @@ class ModelosController extends AbstractController
         return new JsonResponse($json);
     }
 
-    #[Route('/actualizar', name: 'actualizar')]
-    public function actualizar(EntityManagerInterface $gestorEntidades): Response
+    #[Route('/actualizar/{tipo}/{modelo}/{id}', name: 'actualizar')]
+    public function actualizar(EntityManagerInterface $gestorEntidades, int $tipo, String $modelo, int $id): Response
     {
-        // Endpoint de ejemplos: http://localhost:8000/modelos/actualizar
+        // Endpoint de ejemplos: http://localhost:8000/modelos/actualizar/1/Kona 160Kw Tecno/2
+        //$repoModelos = $gestorEntidades->
+        $repoModelo = $gestorEntidades->getRepository(Modelos::class);
+        $modeloCambiado = $repoModelo->find($id);
+        $modeloCambiado->setNombreModelo($modelo);
+
+        // Tanto para actualizar como para insertar, al tratar con Claves Foráneas
+        // debemos pasar el objeto completo relacionado (en este caso la tabla principal Tipos)
+        $repoTipo = $gestorEntidades->getRepository(Tipos::class);
+        $tipoModificado = $repoTipo->find($tipo);
+        $modeloCambiado->setIdTipo($tipoModificado);
+
+        $gestorEntidades->flush();
         return $this->redirectToRoute("app_modelos_consultar");
     }
+
+    #[Route('/eliminar/{id}', name: 'eliminar')]
+    public function eliminar(EntityManagerInterface $gestorEntidades, int $id): Response
+    {
+        // endpoint de ejemplo: http://localhost:8000/modelos/eliminar/2
+        $repoModelos = $gestorEntidades->getRepository(Modelos::class);
+        $repoModelos->borraModelo($gestorEntidades,$id);
+        
+        /*
+        $modeloBorrado = $repoModelos->find($id);
+        $gestorEntidades->remove($modeloBorrado);
+        $gestorEntidades->flush();
+        */
+        return $this->redirectToRoute("app_modelos_consultar_json");
+    }
+
 }

@@ -62,4 +62,14 @@ class ModelosRepository extends ServiceEntityRepository
         ->getQuery()
         ->getResult();
     } 
+
+    /**
+     * Método para eliminar un módelo concreto por ID
+     */
+    public function borraModelo ($gestorEntidades, $id) {
+        $modeloBorrado = $this->find($id);
+        $gestorEntidades->remove($modeloBorrado);
+        $gestorEntidades->flush();
+
+    }
 }
