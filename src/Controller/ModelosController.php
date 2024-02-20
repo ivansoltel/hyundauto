@@ -82,4 +82,11 @@ class ModelosController extends AbstractController
 
         return new JsonResponse($json);
     }
+
+    #[Route('/actualizar', name: 'actualizar')]
+    public function actualizar(EntityManagerInterface $gestorEntidades): Response
+    {
+        // Endpoint de ejemplos: http://localhost:8000/modelos/actualizar
+        return $this->redirectToRoute("app_modelos_consultar");
+    }
 }
