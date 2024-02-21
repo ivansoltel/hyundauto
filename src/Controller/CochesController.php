@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\Coches;
+use App\Form\CochesType;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -20,9 +22,14 @@ class CochesController extends AbstractController
         $repoCoches = $gestorEntidades->getRepository(Coches::class);
         $coches = $repoCoches->findAll();
 
+        
+
         // por capricho del front...
         $json = [];
         foreach ($coches as $coche) {
+            $fecha = new DateTime();
+            $fechaFormateada =  $coche->getFecha->format("Y-m-d");
+
             $json[] = [
                "matricula" => $coche->getMatricula(), 
                "caracteristicas" => [
@@ -30,7 +37,8 @@ class CochesController extends AbstractController
                     "estado" => $coche->isEstado(),
                     "kms" => $coche->getKms(),
                ],
-               "fecha" => $coche->getFecha(),
+               //"fecha" => $coche->getFecha(),
+               "fecha" => $fechaFormateada,
                "modelo" => $coche->getIdModelo()->getNombreModelo(),
             ];
         }
@@ -46,12 +54,18 @@ class CochesController extends AbstractController
         // Vamos a usar por consola php bin/console make:form
         $coche = new Coches();
 
+        $formulario = $this->createForm(CochesType::class, $coche);
+        $formulario->handleRequest($solicitud);
 
-        return $this->render('coches/index.html.twig', [
-            'controller_name' => 'CochesController',
-        ]);
+        if($formulario->isSubmitted() && $formulario->isValid()) {
+            $gestorEntidades->persist($coche);
+            $gestorEntidades->flush();
+            return $this->redirectToRoute('app_coches_consultar');
+        } else {
+            return $this->render('coches/index.html.twig', [
+                'controller_name' => 'CochesController',
+                "miForm" => $formulario,
+            ]);
+        }
     }
-
-
-
 }

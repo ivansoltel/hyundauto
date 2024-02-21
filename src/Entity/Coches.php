@@ -80,19 +80,20 @@ class Coches
         return $this;
     }
 
-    /*
+    
     public function getFecha(): ?\DateTimeInterface
     {
         return $this->fecha;
     }
-    */
+    
+    /*
     public function getFecha(): ?string
     {
         $fecha = new DateTime();
         $fechaFormateada = $this->fecha->format("Y-m-d");
         return $fechaFormateada;
     }
-
+    */
 
     public function setFecha(\DateTimeInterface $fecha): static
     {

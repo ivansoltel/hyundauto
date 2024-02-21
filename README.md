@@ -11,3 +11,5 @@
   - 8) http://localhost:8000/modelos/consultarJSON
   - 9) http://localhost:8000/tipos/consultar
   - 10) http://localhost:8000/tipos/insertar
+  - 11) http://localhost:8000/coches/consultar
+  - 12) http://localhost:8000/coches/insertar
