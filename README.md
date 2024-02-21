@@ -9,3 +9,5 @@
   - 6) http://localhost:8000/modelos/insertar
   - 7) http://localhost:8000/modelos/consultar
   - 8) http://localhost:8000/modelos/consultarJSON
+  - 9) http://localhost:8000/tipos/consultar
+  - 10) http://localhost:8000/tipos/insertar

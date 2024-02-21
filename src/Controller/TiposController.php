@@ -70,11 +70,14 @@ class TiposController extends AbstractController
 
         // Recogemos los datos del formulario
         $formulario->handleRequest($solicitud);
+        
         // Si el formulario se ha enviado Y es válido
         if ($formulario->isSubmitted() && $formulario->isValid()) { 
+            $tipo = $formulario->getData();
             $gestorEntidades->persist($tipo);
             $gestorEntidades->flush();
-            return $this->redirectToRoute("app_tipos_consultar");
+            //return $this->redirectToRoute("app_modelos_consultar");
+            return $this->redirectToRoute("tipos_consultar");
         }
         
         return $this->render('tipos/index.html.twig', [
