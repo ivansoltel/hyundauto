@@ -6,8 +6,28 @@ use App\Entity\Coches;
 use App\Entity\Modelos;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+
+
+/**
+ * Lista de Tipos de campos para los formularios:
+ * (hay que importar de Symfony\Component\Form\Extension\Core\Type)
+ * - TextType
+ * - NumberType
+ * - DateType
+ * - EntityType
+ * - TextAreaType
+ * - EmailType
+ * - PasswordType
+ * - FileType
+ * - ChoiceType
+ * - SubmitType
+ */
 
 class CochesType extends AbstractType
 {
@@ -15,14 +35,16 @@ class CochesType extends AbstractType
     {
         $builder
             ->add('matricula')
-            ->add('precio')
+            ->add('precio', NumberType::class, ["scale" =>2, "attr" => ["step" => 0.5]])
             ->add('estado')
             ->add('kms')
-            ->add('fecha')
+            ->add('fecha', DateType::class, ["widget" => "single_text"])
             ->add('id_modelo', EntityType::class, [
                 'class' => Modelos::class,
-'choice_label' => 'id',
+                'choice_label' => 'nombre_modelo',
             ])
+            ->add('guardar', SubmitType::class, 
+                ["label" => "Insertar Coche", 'attr' => ['class' => 'btn btn-outline-primary']])
         ;
     }
 

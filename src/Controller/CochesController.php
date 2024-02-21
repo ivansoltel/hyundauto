@@ -28,7 +28,7 @@ class CochesController extends AbstractController
         $json = [];
         foreach ($coches as $coche) {
             $fecha = new DateTime();
-            $fechaFormateada =  $coche->getFecha->format("Y-m-d");
+            $fechaFormateada =  $coche->getFecha()->format("Y-m-d");
 
             $json[] = [
                "matricula" => $coche->getMatricula(), 
@@ -60,11 +60,13 @@ class CochesController extends AbstractController
         if($formulario->isSubmitted() && $formulario->isValid()) {
             $gestorEntidades->persist($coche);
             $gestorEntidades->flush();
+            $this->addFlash("success", "Coche insertado");
             return $this->redirectToRoute('app_coches_consultar');
         } else {
             return $this->render('coches/index.html.twig', [
                 'controller_name' => 'CochesController',
-                "miForm" => $formulario,
+                //"miForm" => $formulario,
+                "miForm" => $formulario->createView(),
             ]);
         }
     }
