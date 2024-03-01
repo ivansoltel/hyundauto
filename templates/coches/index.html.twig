@@ -22,5 +22,11 @@
     {{ form_start(miForm) }}
         {{ form_widget(miForm) }}
     {{ form_end(miForm) }}
+
+    {% if mensaje is defined %}
+    <div class="alert alert-success">
+        {{ mensaje }}
+    </div>
+    {% endif %}
 </section>
 {% endblock %}

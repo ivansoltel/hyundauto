@@ -61,7 +61,11 @@ class CochesController extends AbstractController
             $gestorEntidades->persist($coche);
             $gestorEntidades->flush();
             $this->addFlash("success", "Coche insertado");
-            return $this->redirectToRoute('app_coches_consultar');
+            return $this->render('coches/index.html.twig', [
+                'controller_name' => 'CochesController',
+                "mensaje" => "Coche insertado",
+                "miForm" => $formulario->createView(),
+            ]);
         } else {
             return $this->render('coches/index.html.twig', [
                 'controller_name' => 'CochesController',
