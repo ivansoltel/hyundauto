@@ -22,7 +22,7 @@ class CochesController extends AbstractController
         $repoCoches = $gestorEntidades->getRepository(Coches::class);
         $coches = $repoCoches->findAll();
 
-        
+
 
         // por capricho del front...
         $json = [];
@@ -31,15 +31,15 @@ class CochesController extends AbstractController
             $fechaFormateada =  $coche->getFecha()->format("Y-m-d");
 
             $json[] = [
-               "matricula" => $coche->getMatricula(), 
-               "caracteristicas" => [
+                "matricula" => $coche->getMatricula(),
+                "caracteristicas" => [
                     "precio" => $coche->getPrecio(),
                     "estado" => $coche->isEstado(),
                     "kms" => $coche->getKms(),
-               ],
-               //"fecha" => $coche->getFecha(),
-               "fecha" => $fechaFormateada,
-               "modelo" => $coche->getIdModelo()->getNombreModelo(),
+                ],
+                //"fecha" => $coche->getFecha(),
+                "fecha" => $fechaFormateada,
+                "modelo" => $coche->getIdModelo()->getNombreModelo(),
             ];
         }
 
@@ -57,21 +57,16 @@ class CochesController extends AbstractController
         $formulario = $this->createForm(CochesType::class, $coche);
         $formulario->handleRequest($solicitud);
 
-        if($formulario->isSubmitted() && $formulario->isValid()) {
+        if ($formulario->isSubmitted() && $formulario->isValid()) {
             $gestorEntidades->persist($coche);
             $gestorEntidades->flush();
-            $this->addFlash("success", "Coche insertado");
-            return $this->render('coches/index.html.twig', [
-                'controller_name' => 'CochesController',
-                "mensaje" => "Coche insertado",
-                "miForm" => $formulario->createView(),
-            ]);
-        } else {
-            return $this->render('coches/index.html.twig', [
-                'controller_name' => 'CochesController',
-                //"miForm" => $formulario,
-                "miForm" => $formulario->createView(),
-            ]);
+            $this->addFlash('success_coche', 'Coche insertado correctamente.');
         }
+
+        return $this->render('coches/index.html.twig', [
+            'controller_name' => 'CochesController',
+            //"miForm" => $formulario,
+            "miForm" => $formulario->createView(),
+        ]);
     }
 }

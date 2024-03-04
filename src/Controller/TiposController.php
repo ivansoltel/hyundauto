@@ -26,8 +26,8 @@ class TiposController extends AbstractController
         $tipo->setNombreTipo($nombreTipo);
         $gestorEntidades->persist($tipo);
         $gestorEntidades->flush();
-
-        return new Response("<h1>Tipo insertado, ID= " . $tipo->getId() . "</h1>");
+        return $this->redirectToRoute("app_tipos_consultar", []);
+        //return new Response("<h1>Tipo insertado, ID= " . $tipo->getId() . "</h1>");
     }
 
     #[Route('/consultar', name: 'consultar')]
@@ -62,28 +62,29 @@ class TiposController extends AbstractController
 
         // Creamos el formulario CAMPO POR CAMPO
         $formulario = $this->createFormBuilder($tipo)
-            ->add('nombre_tipo', TextType::class, 
-                ['attr' => ['class' => 'form-control']])
-            ->add('guardar', SubmitType::class, 
-                ["label" => "Insertar Tipo", 'attr' => ['class' => 'btn btn-outline-primary']])
+            ->add('nombre_tipo', TextType::class, ['attr' => ['class' => 'form-control']])
+            ->add('guardar', SubmitType::class, ["label" => "Insertar Tipo", 'attr' => ['class' => 'btn btn-outline-primary']])
             ->getForm();
 
         // Recogemos los datos del formulario
         $formulario->handleRequest($solicitud);
-        
+
         // Si el formulario se ha enviado Y es válido
-        if ($formulario->isSubmitted() && $formulario->isValid()) { 
+        if ($formulario->isSubmitted() && $formulario->isValid()) {
             $tipo = $formulario->getData();
             $gestorEntidades->persist($tipo);
             $gestorEntidades->flush();
-            //return $this->redirectToRoute("app_modelos_consultar");
-            return $this->redirectToRoute("tipos_consultar");
+            //$this->addFlash('success', 'Tipo insertado correctamente.');
+            //return $this->redirectToRoute("app_tipos_consultar");
+            //return $this->redirectToRoute("tipos_consultar");
+
+            $this->addFlash('success_tipo', 'Tipo insertado correctamente.');
         }
-        
+
         return $this->render('tipos/index.html.twig', [
             'controller_name' => 'TiposController',
             'miForm' => $formulario->createView(),
+
         ]);
     }
-
 }
