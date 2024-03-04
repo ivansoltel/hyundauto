@@ -1,17 +1,18 @@
 export class Coche {
-    matricula: string;
-    id_modelo: number;
+    matricula: string;      // Primary Key
     precio: number;
     estado: boolean;
     kms: number;
     fecha: Date
+    modelo: string
 
-    constructor(matricula:string, id_modelo:number, precio:number, estado:boolean, kms:number, fecha:Date){
+    constructor(matricula:string, precio:number, 
+        estado:boolean, kms:number, fecha:Date, modelo: string){
         this.matricula = matricula;
-        this.id_modelo = id_modelo;
         this.precio = precio;
         this.estado = estado;
         this.kms = kms;
         this.fecha = fecha
+        this.modelo = modelo;
     }
 }
